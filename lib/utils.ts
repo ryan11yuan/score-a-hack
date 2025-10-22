@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { SCORE_THRESHOLDS } from "./constants"
+import { backOff } from "exponential-backoff";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -42,3 +43,19 @@ export function formatDate(date: string | Date): string {
     minute: "2-digit",
   }).format(new Date(date))
 }
+
+const useBackOff = async (func: () => Promise<any>) => {
+  return await backOff(async () => {
+    try {
+      return await func();
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }, {
+    numOfAttempts: 20,
+    timeMultiple: 1.05
+  })
+    .catch(console.error);
+};
+
+export default useBackOff;

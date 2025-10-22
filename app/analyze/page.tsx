@@ -1,4 +1,4 @@
-import { AnalysisForm } from "@/components/analysis-form"
+import { AnalysisForm } from "@/app/analyze/_components/analysis-form"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Lightbulb, Sparkles, Target } from "lucide-react"
 
